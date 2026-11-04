@@ -1,5 +1,4 @@
 // mongosh skydesk < mongo/queries.js     (or paste block by block)
-// ---------------------------------------------------------------------------
 // A1  Average and worst departure delay + on-time % per airline
 db.flight_events.aggregate([
   { $match: { event_type: 'DEPARTURE_ACTUAL' } },
