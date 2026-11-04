@@ -1,8 +1,6 @@
--- =====================================================================
 -- SkyDesk AMS | 02_programmability.sql | MySQL
 -- Functions, stored procedures and triggers: business rules enforced IN the database.
 -- (DELIMITER lines are understood by the mysql client, MySQL Workbench and scripts/setup-db.mjs)
--- =====================================================================
 
 DROP FUNCTION  IF EXISTS fn_flight_capacity;
 DROP FUNCTION  IF EXISTS fn_class_multiplier;
@@ -16,7 +14,7 @@ DROP PROCEDURE IF EXISTS sp_cancel_booking;
 
 DELIMITER $$
 
--- ---------- FUNCTIONS -------------------------------------------------
+-- FUNCTIONS
 -- Aircraft layout: 40 rows x 6 seats (A-F). Row limit is also a CHECK on booking.seat_number.
 CREATE FUNCTION fn_flight_capacity() RETURNS INT DETERMINISTIC
 BEGIN
@@ -50,7 +48,7 @@ BEGIN
     RETURN CASE p_class WHEN 'ECONOMY' THEN 30 WHEN 'BUSINESS' THEN 40 WHEN 'FIRST' THEN 50 END;
 END$$
 
--- ---------- helper used by the two flight triggers --------------------
+-- helper used by the two flight triggers
 -- Gate must be at the departure airport and free for +-60 minutes.
 CREATE PROCEDURE sp_check_flight(IN p_flight_id INT, IN p_gate_id INT, IN p_dep_airport INT,
                                  IN p_status VARCHAR(12), IN p_departure DATETIME)
@@ -74,9 +72,7 @@ BEGIN
     END IF;
 END$$
 
--- =====================================================================
 -- TRIGGERS (8 trigger objects implementing 7 business rules)
--- =====================================================================
 
 -- T1  FLIGHT gate rules (MySQL needs one trigger per event, so INSERT and UPDATE share the procedure above)
 CREATE TRIGGER flight_validate_ins BEFORE INSERT ON flight FOR EACH ROW
@@ -182,9 +178,7 @@ BEGIN
     END IF;
 END$$
 
--- =====================================================================
 -- STORED PROCEDURES
--- =====================================================================
 
 -- Settle a pending payment (success confirms the booking through T3)
 CREATE PROCEDURE sp_process_payment(IN p_booking_id INT, IN p_success BOOLEAN)
