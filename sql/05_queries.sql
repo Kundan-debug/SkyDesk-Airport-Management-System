@@ -1,6 +1,4 @@
--- =====================================================================
 -- SkyDesk AMS | 05_queries.sql | important queries (run by hand in MySQL Workbench / mysql client)
--- =====================================================================
 
 -- Q1 JOIN + ORDER BY (view): search flights BLR -> DEL with seat availability
 SELECT flight_number, airline_name, dep_code, arr_code, scheduled_departure, seats_available, base_fare
@@ -69,7 +67,7 @@ SELECT fn_ticket_price(1, 'BUSINESS') AS business_fare, fn_available_seats(1) AS
 EXPLAIN SELECT * FROM flight
 WHERE departure_airport_id = 1 AND arrival_airport_id = 2 AND scheduled_departure >= NOW();
 
--- ---------- DML demos (INSERT / UPDATE / DELETE) ------------------------
+-- DML demos (INSERT / UPDATE / DELETE)
 -- INSERT a flight (trigger T1 checks the gate):
 --   INSERT INTO flight (flight_number, airline_id, departure_airport_id, arrival_airport_id, scheduled_departure, scheduled_arrival)
 --   VALUES ('AI999', 1, 1, 2, NOW() + INTERVAL 3 DAY, NOW() + INTERVAL 3 DAY + INTERVAL 3 HOUR);
