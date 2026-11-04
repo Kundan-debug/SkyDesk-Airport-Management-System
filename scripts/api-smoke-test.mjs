@@ -26,7 +26,7 @@ function check(id, name, cond, extra = '') {
 const adminPw = process.env.DEMO_ADMIN_PASSWORD, paxPw = process.env.DEMO_PASSENGER_PASSWORD;
 if (!adminPw || !paxPw) { console.error('Set DEMO_ADMIN_PASSWORD and DEMO_PASSENGER_PASSWORD in .env (same values used for db:setup).'); process.exit(1); }
 
-// --- authentication ---
+// authentication
 let r = await call('GET', '/api/flights');
 check('TC-01', 'Unauthenticated request is rejected (401)', r.status === 401, r.status);
 r = await call('POST', '/api/auth/login', { data: { username: 'arjun', password: 'wrong-password-1' } });
@@ -35,7 +35,7 @@ const pax = await login('arjun', paxPw);
 const admin = await login('admin', adminPw);
 check('TC-03', 'Valid logins succeed for passenger and admin', pax && admin);
 
-// --- authorisation ---
+// authorisation
 r = await call('GET', '/api/analytics', { cookie: pax });
 check('TC-04', 'Passenger cannot open analytics (403)', r.status === 403, r.status);
 r = await call('GET', '/api/analytics', { cookie: admin });
@@ -43,7 +43,7 @@ check('TC-05', 'Admin can open analytics (200)', r.status === 200, r.status);
 r = await call('POST', '/api/flights', { cookie: pax, data: {} });
 check('TC-06', 'Passenger cannot create flights (403)', r.status === 403, r.status);
 
-// --- search and ownership ---
+// search and ownership
 r = await call('GET', '/api/flights?from=BLR&to=DEL', { cookie: pax });
 check('TC-07', 'Flight search BLR->DEL returns results', r.status === 200 && r.body.flights.length > 0, r.status);
 const qp = (await call('GET', '/api/flights?from=BLR&to=HYD', { cookie: pax })).body.flights[0];
@@ -51,7 +51,7 @@ const bom = (await call('GET', '/api/flights?from=BLR&to=BOM', { cookie: pax }))
 r = await call('GET', '/api/bookings', { cookie: pax });
 check('TC-08', 'Passenger sees only their own bookings', r.status === 200 && r.body.bookings.length > 0 && new Set(r.body.bookings.map((b) => b.passenger_id)).size === 1);
 
-// --- booking rules enforced by the database ---
+// booking rules enforced by the database
 r = await call('POST', '/api/bookings', { cookie: pax, data: { flight_id: qp.flight_id, seat_number: '14B', travel_class: 'ECONOMY', payment_method: 'UPI' } });
 check('TC-09', 'Booking an already-taken seat fails (409)', r.status === 409, `${r.status} ${JSON.stringify(r.body)}`);
 r = await call('POST', '/api/bookings', { cookie: pax, data: { flight_id: qp.flight_id, seat_number: 'ZZ', travel_class: 'ECONOMY', payment_method: 'UPI' } });
@@ -69,7 +69,7 @@ if (ok) {
   check('TC-13', 'Cancelling twice is rejected (400)', r.status === 400, r.status);
 }
 
-// --- admin operations and integrity ---
+// admin operations and integrity
 const all = (await call('GET', '/api/bookings?status=CONFIRMED', { cookie: admin })).body.bookings;
 const vikram = all.find((b) => b.passenger_email === 'vikram.singh@example.com');
 r = await call('POST', '/api/baggage', { cookie: admin, data: { booking_id: vikram.booking_id, weight: 10 } });
