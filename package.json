@@ -1,0 +1,30 @@
+{
+  "name": "skydesk-ams",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SkyDesk - Airport Management System (Next.js + MySQL + MongoDB)",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "db:setup": "node scripts/setup-db.mjs",
+    "mongo:setup": "node scripts/setup-mongo.mjs",
+    "setup:all": "npm run db:setup && npm run mongo:setup",
+    "test:api": "node scripts/api-smoke-test.mjs"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "jose": "^5.9.6",
+    "mongodb": "^6.9.0",
+    "mysql2": "^3.11.3",
+    "next": "^15.5.29",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^4.6.7"
+  },
+  "overrides": {
+    "postcss": "8.5.32"
+  },
+  "author": "Kundan (PES1UG24CS243), Vikas (PES1UG24CS915)"
+}
