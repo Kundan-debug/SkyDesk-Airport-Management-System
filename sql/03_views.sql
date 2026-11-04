@@ -1,6 +1,4 @@
--- =====================================================================
 -- SkyDesk AMS | 03_views.sql | MySQL
--- =====================================================================
 
 -- Departure-board view with live seat availability
 CREATE OR REPLACE VIEW v_flight_board AS
