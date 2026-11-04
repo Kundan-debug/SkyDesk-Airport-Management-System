@@ -1,7 +1,7 @@
 # SkyDesk – Airport Management System
 
 **Project documentation**  
-**Course:** DBMS Experiential Learning, Level 3, PES University  
+**Course:** Database Management System  
 **Team members:** Kundan (PES1UG24CS243) and Vikas (PES1UG24CS915)  
 **Technology stack:** Next.js · MySQL · MongoDB
 
