@@ -1,10 +1,8 @@
--- =====================================================================
 -- SkyDesk AMS | 01_schema.sql | MySQL 8.0.19+ (8.4 recommended)
 -- DDL: CREATE / ALTER / DROP, primary & foreign keys, constraints, indexes
 -- Safe to re-run: drops everything first.
--- =====================================================================
 
--- ---------- DROP ------------------------------------------------------
+-- DROP
 DROP VIEW IF EXISTS v_dashboard_kpis;
 DROP VIEW IF EXISTS v_airline_performance;
 DROP VIEW IF EXISTS v_baggage_tracking;
@@ -14,7 +12,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS user_account, employee, role, baggage, payment, booking, passenger, flight, airline, gate, terminal, airport;
 SET FOREIGN_KEY_CHECKS = 1;
 
--- ---------- AIRPORT ---------------------------------------------------
+-- AIRPORT
 CREATE TABLE airport (
     airport_id    INT AUTO_INCREMENT PRIMARY KEY,
     airport_code  CHAR(3)      NOT NULL UNIQUE,
@@ -25,7 +23,7 @@ CREATE TABLE airport (
     FULLTEXT KEY ft_airport (airport_name, city)
 ) ENGINE=InnoDB;
 
--- ---------- TERMINAL (Airport 1 : M Terminal) -------------------------
+-- TERMINAL (Airport 1 : M Terminal)
 CREATE TABLE terminal (
     terminal_id   INT AUTO_INCREMENT PRIMARY KEY,
     airport_id    INT         NOT NULL,
@@ -34,7 +32,7 @@ CREATE TABLE terminal (
     CONSTRAINT fk_terminal_airport FOREIGN KEY (airport_id) REFERENCES airport(airport_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ---------- GATE (Terminal 1 : M Gate) --------------------------------
+-- GATE (Terminal 1 : M Gate)
 CREATE TABLE gate (
     gate_id      INT AUTO_INCREMENT PRIMARY KEY,
     terminal_id  INT         NOT NULL,
@@ -45,7 +43,7 @@ CREATE TABLE gate (
     CONSTRAINT fk_gate_terminal FOREIGN KEY (terminal_id) REFERENCES terminal(terminal_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ---------- AIRLINE ---------------------------------------------------
+-- AIRLINE
 CREATE TABLE airline (
     airline_id    INT AUTO_INCREMENT PRIMARY KEY,
     airline_code  VARCHAR(3)  NOT NULL UNIQUE,
@@ -54,7 +52,7 @@ CREATE TABLE airline (
     CONSTRAINT ck_airline_code CHECK (REGEXP_LIKE(airline_code, '^[A-Z0-9]{2,3}$', 'c'))
 ) ENGINE=InnoDB;
 
--- ---------- FLIGHT ----------------------------------------------------
+-- FLIGHT
 CREATE TABLE flight (
     flight_id            INT AUTO_INCREMENT PRIMARY KEY,
     flight_number        VARCHAR(8) NOT NULL,
@@ -76,7 +74,7 @@ CREATE TABLE flight (
     CONSTRAINT fk_flight_gate    FOREIGN KEY (gate_id)              REFERENCES gate(gate_id)       ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
--- ---------- PASSENGER -------------------------------------------------
+-- PASSENGER
 CREATE TABLE passenger (
     passenger_id    INT AUTO_INCREMENT PRIMARY KEY,
     first_name      VARCHAR(50)  NOT NULL,
@@ -93,7 +91,7 @@ CREATE TABLE passenger (
     CONSTRAINT ck_pax_email CHECK (REGEXP_LIKE(email, '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,}$'))
 ) ENGINE=InnoDB;
 
--- ---------- BOOKING (Passenger 1 : M Booking, Flight 1 : M Booking) ---
+-- BOOKING (Passenger 1 : M Booking, Flight 1 : M Booking)
 -- Columns are exactly the ER diagram. "One live booking per seat / per passenger per flight" is enforced
 -- by trigger booking_validate (02_programmability.sql), which also locks the flight row so it is race-free.
 CREATE TABLE booking (
@@ -111,7 +109,7 @@ CREATE TABLE booking (
     CONSTRAINT fk_booking_flight    FOREIGN KEY (flight_id)    REFERENCES flight(flight_id)       ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- ---------- PAYMENT (Booking 1 : 1 Payment) ---------------------------
+-- PAYMENT (Booking 1 : 1 Payment)
 CREATE TABLE payment (
     payment_id            INT AUTO_INCREMENT PRIMARY KEY,
     booking_id            INT NOT NULL UNIQUE,
@@ -127,7 +125,7 @@ CREATE TABLE payment (
     CONSTRAINT fk_payment_booking FOREIGN KEY (booking_id) REFERENCES booking(booking_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ---------- BAGGAGE ---------------------------------------------------
+-- BAGGAGE
 CREATE TABLE baggage (
     baggage_id     INT AUTO_INCREMENT PRIMARY KEY,
     passenger_id   INT NOT NULL,
@@ -141,7 +139,7 @@ CREATE TABLE baggage (
     CONSTRAINT fk_bag_flight    FOREIGN KEY (flight_id)    REFERENCES flight(flight_id)       ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- ---------- ROLE / EMPLOYEE / USER_ACCOUNT ----------------------------
+-- ROLE / EMPLOYEE / USER_ACCOUNT
 CREATE TABLE role (
     role_id     INT AUTO_INCREMENT PRIMARY KEY,
     role_name   VARCHAR(20) NOT NULL UNIQUE,
@@ -185,7 +183,7 @@ CREATE TABLE user_account (
     CONSTRAINT fk_user_passenger FOREIGN KEY (passenger_id) REFERENCES passenger(passenger_id)
 ) ENGINE=InnoDB;
 
--- ---------- ALTER (adding rules after the first design) ----------------
+-- ALTER (adding rules after the first design)
 -- The aircraft layout is 40 rows x 6 seats (A-F) = 240 seats; add the row limit as a constraint.
 ALTER TABLE booking
     ADD CONSTRAINT ck_seat_row CHECK (CAST(SUBSTRING(seat_number, 1, CHAR_LENGTH(seat_number) - 1) AS UNSIGNED) BETWEEN 1 AND 40);
@@ -199,7 +197,7 @@ ALTER TABLE scratch_demo DROP CHECK ck_demo;
 ALTER TABLE scratch_demo DROP COLUMN created_on;
 DROP TABLE scratch_demo;
 
--- ---------- INDEXES ---------------------------------------------------
+-- INDEXES
 CREATE INDEX idx_flight_route      ON flight (departure_airport_id, arrival_airport_id, scheduled_departure);
 CREATE INDEX idx_flight_status     ON flight (flight_status);
 CREATE INDEX idx_flight_gate_time  ON flight (gate_id, scheduled_departure);
