@@ -55,7 +55,7 @@ try {
   process.exit(1);
 }
 
-// ---- demo accounts (passwords are bcrypt-hashed; plain text is never stored) ----
+// demo accounts (passwords are bcrypt-hashed; plain text is never stored)
 const pw = (envName) => {
   const given = process.env[envName];
   if (given) return { plain: given, shown: '(from .env)' };
