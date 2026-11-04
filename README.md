@@ -9,7 +9,7 @@ The project uses a **Next.js** web application, **MySQL 8** for structured trans
 - Kundan (PES1UG24CS243)
 - Vikas (PES1UG24CS915)
 
-**Course:** DBMS Experiential Learning, Level 3, PES University
+**Course:** Database Management System
 
 ## Main features
 
