@@ -1,7 +1,5 @@
--- =====================================================================
 -- SkyDesk AMS | 04_seed.sql | sample data (MySQL 8.0.19+ for VALUES ROW)
 -- User accounts are created by scripts/setup-db.mjs because passwords must be hashed (bcrypt) in code.
--- =====================================================================
 INSERT INTO role (role_name, description) VALUES
  ('ADMIN','Airport staff / administrator: flight operations, baggage, analytics, all bookings'),
  ('PASSENGER','Customer: search flights, book, pay, cancel, track own baggage');
