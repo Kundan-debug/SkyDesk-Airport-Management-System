@@ -6,23 +6,23 @@ This document describes the planned API and database test cases for SkyDesk. The
 
 | ID | Area | Steps | Expected | Result |
 |---|---|---|---|---|
-| TC-01 | Auth | GET /api/flights without cookie | 401 | |
-| TC-02 | Auth | Login with wrong password | 401 | |
-| TC-03 | Auth | Login as passenger and admin | cookie issued | |
-| TC-04 | Roles | Passenger GET /api/analytics | 403 | |
-| TC-05 | Roles | Admin GET /api/analytics | 200 | |
-| TC-06 | Roles | Passenger POST /api/flights | 403 | |
-| TC-07 | Search | Flights BLR→DEL | ≥1 result | |
-| TC-08 | Ownership | Passenger lists bookings | only own rows | |
-| TC-09 | Integrity | Book taken seat 14B on QP1103 | 409 "seat already taken" | |
-| TC-10 | Validation | Seat `ZZ` | 400 | |
-| TC-11 | Trigger T2/T3 | Book + pay seat 31F on 6E204 | CONFIRMED + SUCCESS | |
-| TC-12 | Trigger T4 | Cancel that booking | CANCELLED + REFUNDED | |
-| TC-13 | Integrity | Cancel again | 400 | |
-| TC-14 | Trigger T6 | Add 10 kg to Vikram (25 kg, economy) | 400 allowance exceeded | |
-| TC-15 | Trigger T1 | Assign a DEL gate to a BLR flight | 400 | |
-| TC-16 | Search | Free-text search "hyderabad" | ≥1 flight | |
-| TC-17 | CHECK | Book seat `41A` (row outside 1-40) | 400 | |
+| TC-01 | Auth | GET /api/flights without cookie | 401 | PASS | |
+| TC-02 | Auth | Login with wrong password | 401 | PASS | |
+| TC-03 | Auth | Login as passenger and admin | cookie issued | PASS | |
+| TC-04 | Roles | Passenger GET /api/analytics | 403 | PASS | |
+| TC-05 | Roles | Admin GET /api/analytics | 200 | PASS | |
+| TC-06 | Roles | Passenger POST /api/flights | 403 | PASS | |
+| TC-07 | Search | Flights BLR→DEL | ≥1 result | PASS | |
+| TC-08 | Ownership | Passenger lists bookings | only own rows | PASS | |
+| TC-09 | Integrity | Book taken seat 14B on QP1103 | 409 "seat already taken" | PASS | |
+| TC-10 | Validation | Seat `ZZ` | 400 | PASS | |
+| TC-11 | Trigger T2/T3 | Book + pay seat 31F on 6E204 | CONFIRMED + SUCCESS | PASS | |
+| TC-12 | Trigger T4 | Cancel that booking | CANCELLED + REFUNDED | PASS | |
+| TC-13 | Integrity | Cancel again | 400 | PASS | |
+| TC-14 | Trigger T6 | Add 10 kg to Vikram (25 kg, economy) | 400 allowance exceeded | PASS | |
+| TC-15 | Trigger T1 | Assign a DEL gate to a BLR flight | 400 | PASS | |
+| TC-16 | Search | Free-text search "hyderabad" | ≥1 flight | PASS | |
+| TC-17 | CHECK | Book seat `41A` (row outside 1-40) | 400 | PASS | |
 
 ## Manual / database test cases
 | ID | Steps | Expected |
