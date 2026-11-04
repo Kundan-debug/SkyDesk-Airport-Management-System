@@ -1,6 +1,4 @@
--- =====================================================================
 -- SkyDesk AMS | 06_transaction_demos.sql | run block by block in MySQL Workbench / mysql client
--- =====================================================================
 
 -- T1: sp_book_flight is ONE atomic transaction (booking + payment + payment success)
 SET @pax    = (SELECT passenger_id FROM passenger WHERE email = 'meera.pillai@example.com');
